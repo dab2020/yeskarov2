@@ -6,7 +6,14 @@ import { Poppins_400Regular, Poppins_500Medium, Poppins_600SemiBold, Poppins_800
 import { Link, Stack, usePathname } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import {
+  Platform,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  useWindowDimensions
+} from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 function AppShell() {
@@ -22,12 +29,7 @@ function AppShell() {
   
     const desktop = mounted && width >= 1024;
   
-    useFonts({
-      Poppins_400Regular,
-      Poppins_500Medium,
-      Poppins_600SemiBold,
-      Poppins_800ExtraBold
-    });
+    useFonts(fontSources);
   
     const hasDock = Boolean(
       mounted &&
@@ -77,6 +79,16 @@ function AppShell() {
     </View>
   </SafeAreaView>;
 }
+
+const fontSources =
+  Platform.OS === 'web'
+    ? {}
+    : {
+        Poppins_400Regular,
+        Poppins_500Medium,
+        Poppins_600SemiBold,
+        Poppins_800ExtraBold,
+      };
 
 export default function RootLayout() { return <SafeAreaProvider><AppProvider><AppShell /></AppProvider></SafeAreaProvider>; }
 
