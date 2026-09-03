@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "packageManager": "pnpm@11.25.0",
   "engines": {
-    "node": ">=22.13.0"
+    "node": ">=22.22.2"
   },
   "dependencies": {
     "@expo-google-fonts/poppins": "^0.4.1",

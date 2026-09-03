@@ -33,7 +33,7 @@ The client also provides one-tap local demo-role buttons, so interface review do
 
 ## Local setup on Windows
 
-Use **PowerShell** from the repository directory. Requirements are Node.js 22.13 or newer and pnpm 11. If Node is not already installed, open PowerShell as Administrator and run:
+Use **PowerShell** from the repository directory. Requirements are Node.js 22.22.2 or newer and pnpm 11. If Node is not already installed, open PowerShell as Administrator and run:
 
 ```powershell
 winget install OpenJS.NodeJS.LTS
@@ -46,15 +46,15 @@ corepack install --global pnpm@11.25.0
 If you use **NVM for Windows**, select the project's supported Node version instead. This is also the fix if `node --version` reports Node 18 or pnpm fails with `TypeError: Invalid host defined options`:
 
 ```powershell
-nvm install 22.13.1
-nvm use 22.13.1
+nvm install 22.22.2
+nvm use 22.22.2
 corepack disable
 npm install --global corepack@latest
 corepack enable
 corepack install --global pnpm@11.25.0
 ```
 
-Node 22.13.1 bundles Corepack 0.30.0, whose older signing keys can fail with `Cannot find matching keyid` when installing current pnpm releases. The `npm install --global corepack@latest` step upgrades Corepack before it downloads pnpm. Type `pnpm@11.25.0` exactly—PowerShell does not require a backslash before `@`.
+Older Node 22 releases can bundle a Corepack version whose signing keys fail with `Cannot find matching keyid` when installing current pnpm releases. The `npm install --global corepack@latest` step upgrades Corepack before it downloads pnpm. Type `pnpm@11.25.0` exactly—PowerShell does not require a backslash before `@`.
 
 Close and reopen PowerShell after `nvm use` if the old Node version remains active. `where.exe node` should then point to the NVM-managed Node installation. The repository includes `.nvmrc`, and `package.json` enforces the minimum Node version.
 
