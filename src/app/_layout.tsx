@@ -10,7 +10,6 @@ import { Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-na
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 function AppShell() {
-  function AppShell() {
     const { user } = useApp();
     const pathname = usePathname();
     const { width } = useWindowDimensions();
