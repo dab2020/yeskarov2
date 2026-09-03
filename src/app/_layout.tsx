@@ -1,24 +1,56 @@
-import '@/global.css';
+import { MobileDock } from '@/components/app-chrome';
+import { colors, fonts } from '@/constants/yeskaro-theme';
 import { AppProvider, useApp } from '@/context/app-context';
-import { colors } from '@/constants/yeskaro-theme';
+import '@/global.css';
+import { Poppins_400Regular, Poppins_500Medium, Poppins_600SemiBold, Poppins_800ExtraBold, useFonts } from '@expo-google-fonts/poppins';
 import { Link, Stack, usePathname } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { Pressable, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { Poppins_400Regular, Poppins_500Medium, Poppins_600SemiBold, Poppins_800ExtraBold, useFonts } from '@expo-google-fonts/poppins';
-import { MobileDock } from '@/components/app-chrome';
-import { fonts } from '@/constants/yeskaro-theme';
 
 function AppShell() {
-  const { user } = useApp();
-  const pathname = usePathname();
-  const { width } = useWindowDimensions();
-  const desktop = width >= 1024;
-  useFonts({ Poppins_400Regular, Poppins_500Medium, Poppins_600SemiBold, Poppins_800ExtraBold });
-  const hasDock = Boolean(user && !desktop && ['/dashboard', '/escrows', '/wallet'].includes(pathname));
-  const nav = user?.role === 'admin'
-    ? [['Overview', '/admin'], ['Notifications', '/notifications'], ['Profile', '/profile']]
-    : [['Home', '/dashboard'], ['Escrows', '/escrows'], ['Create escrow', '/new-project'], ['Wallet', '/wallet'], ['Notifications', '/notifications'], ['Profile', '/profile']];
+  function AppShell() {
+    const { user } = useApp();
+    const pathname = usePathname();
+    const { width } = useWindowDimensions();
+  
+    const [mounted, setMounted] = useState(false);
+  
+    useEffect(() => {
+      setMounted(true);
+    }, []);
+  
+    const desktop = mounted && width >= 1024;
+  
+    useFonts({
+      Poppins_400Regular,
+      Poppins_500Medium,
+      Poppins_600SemiBold,
+      Poppins_800ExtraBold
+    });
+  
+    const hasDock = Boolean(
+      mounted &&
+      user &&
+      !desktop &&
+      ['/dashboard', '/escrows', '/wallet'].includes(pathname)
+    );
+  
+    const nav = user?.role === 'admin'
+      ? [
+          ['Overview', '/admin'],
+          ['Notifications', '/notifications'],
+          ['Profile', '/profile']
+        ]
+      : [
+          ['Home', '/dashboard'],
+          ['Escrows', '/escrows'],
+          ['Create escrow', '/new-project'],
+          ['Wallet', '/wallet'],
+          ['Notifications', '/notifications'],
+          ['Profile', '/profile']
+        ];
 
   return <SafeAreaView style={styles.safe} edges={['top', 'left', 'right']}>
     <StatusBar style="dark" />
