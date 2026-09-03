@@ -1,0 +1,15 @@
+import { BackButton, Button, Card, Field, Page, StatusPill, type } from '@/components/ui-kit';
+import { colors, spacing } from '@/constants/yeskaro-theme';
+import { useApp } from '@/context/app-context';
+import { useLocalSearchParams } from 'expo-router';
+import { useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+
+export default function DisputeScreen() {
+  const { id } = useLocalSearchParams<{ id: string }>(); const { projects, disputes, user } = useApp(); const [statement, setStatement] = useState(''); const [submitted, setSubmitted] = useState(false);
+  const existing = disputes.find((item) => item.id === id || item.milestoneId === id); const milestone = projects.flatMap((p) => p.milestones).find((m) => m.id === id || m.id === existing?.milestoneId);
+  if (!user) return null;
+  if (existing) return <Page><BackButton /><View><StatusPill value={existing.status} /><Text style={type.h1}>{existing.title}</Text><Text style={type.body}>Dispute mediation record</Text></View><View style={styles.grid}><Card style={styles.column}><Text style={type.eyebrow}>Buyer statement</Text><Text style={type.body}>{existing.buyerStatement}</Text></Card><Card style={styles.column}><Text style={type.eyebrow}>Seller statement</Text><Text style={type.body}>{existing.sellerStatement}</Text></Card></View>{existing.status === 'resolved' ? <Card><Text style={type.h2}>Final ruling</Text><Text style={type.body}>{existing.finalRuling}</Text></Card> : <Card style={styles.ai}><Text style={type.eyebrow}>Status</Text><Text style={type.h3}>Admin review in progress</Text><Text style={type.body}>Both statements are in. The AI recommendation is visible only to the admin until a final ruling is confirmed.</Text></Card>}</Page>;
+  return <Page><BackButton /><Text style={type.eyebrow}>Raise a dispute</Text><Text style={type.h1}>{milestone?.title ?? 'Milestone'}</Text><Card><Text style={type.h2}>Tell us what happened</Text><Text style={type.body}>Be specific about the agreed scope, what was delivered, and what outcome you’re requesting.</Text><Field label="Required justification" value={statement} onChangeText={setStatement} multiline placeholder="Explain your claim and refer to specific deliverables…" /><View style={styles.evidence}><Text style={type.h3}>＋ Add evidence</Text><Text style={type.small}>Screenshots, documents, or links. Files are stored privately in R2.</Text></View><Button label={submitted ? 'Statement submitted' : 'Submit dispute'} disabled={!statement || submitted} onPress={() => setSubmitted(true)} />{submitted && <Text style={styles.success}>Your statement is recorded. The other party will be asked to respond.</Text>}</Card></Page>;
+}
+const styles = StyleSheet.create({ grid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.lg }, column: { flex: 1, minWidth: 280 }, ai: { backgroundColor: colors.brandSoft }, evidence: { borderWidth: 1, borderStyle: 'dashed', borderColor: colors.border, padding: spacing.lg, alignItems: 'center' }, success: { color: colors.success, fontWeight: '700' } });

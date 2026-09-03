@@ -1,0 +1,8 @@
+packages:
+  - .
+
+nodeLinker: hoisted
+
+onlyBuiltDependencies:
+  - esbuild
+  - workerd

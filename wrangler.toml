@@ -1,0 +1,26 @@
+name = "yeskaro-api"
+main = "worker/index.ts"
+compatibility_date = "2026-08-15"
+
+workers_dev = false
+
+[[routes]]
+pattern = "api.yeskaro.syndicatesolutions.org"
+custom_domain = true
+
+[vars]
+OPENROUTER_MODEL = "deepseek/deepseek-r1"
+GROQ_WHISPER_MODEL = "whisper-large-v3"
+ALLOWED_ORIGIN = "https://yeskaro.syndicatesolutions.org"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "yeskaro-db"
+database_id = "ef2539bb-0084-4585-8709-eaeeef0d506f"
+migrations_dir = "worker/migrations"
+
+[[r2_buckets]]
+binding = "FILES"
+bucket_name = "yeskaro-files"
+
+# Secrets: JWT_SECRET, OPENROUTER_API_KEY, GROQ_API_KEY
